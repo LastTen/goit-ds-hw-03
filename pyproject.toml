@@ -10,6 +10,9 @@ python = "^3.12"
 black = "^24.4.2"
 pymongo = {extras = ["srv"], version = "^4.7.3"}
 python-dotenv = "^1.0.1"
+lxml = "^5.2.2"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.12.3"
 
 
 [build-system]
