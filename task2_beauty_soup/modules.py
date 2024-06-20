@@ -1,11 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
 
-url = "http://quotes.toscrape.com"
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "lxml")
+
 
 def save_data_json(file, data):
     """Save the json data to a file"""
@@ -16,13 +13,26 @@ def save_data_json(file, data):
     ) as f:
         json.dump(data, f, indent=4)
 
-def get_authors_links():
+def get_soup(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "lxml")
+    return soup
+
+
+def get_authors_links(url):
     authors_link = []
-    quotes = soup.select(".author + a")
-    for quote in quotes:
-        link = f"{url}{quote["href"]}"
-        if link not in authors_link:
-            authors_link.append(f"{url}{quote["href"]}")
+    counter = 1
+    while True:
+        page_url = f"{url}/page/{counter}/"
+        soup = get_soup(page_url)
+        quotes = soup.select(".author + a")
+        if len(quotes) == 0:
+            break
+        counter += 1
+        for quote in quotes:
+            link = f"{url}{quote["href"]}"
+            if link not in authors_link:
+                authors_link.append(f"{url}{quote["href"]}")
     return authors_link
 
 def authors_info(authors):
@@ -38,7 +48,8 @@ def authors_info(authors):
     return data
 
 if __name__ == "__main__":
-    # save_data_json('file.json', authors_info(get_authors_links()))
+    url = "http://quotes.toscrape.com"
+    # save_data_json("file.json", authors_info(get_authors_links(url)))
     # authors_info(get_authors_links())
-    print(get_authors_links())
+    # print(get_authors_links())
     # print(soup)
