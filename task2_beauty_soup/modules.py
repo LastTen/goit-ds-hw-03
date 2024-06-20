@@ -19,13 +19,13 @@ def get_soup(url):
     return soup
 
 
-def get_authors_links(url):
+def get_authors_links(url, selector):
     authors_link = []
     counter = 1
     while True:
         page_url = f"{url}/page/{counter}/"
         soup = get_soup(page_url)
-        quotes = soup.select(".author + a")
+        quotes = soup.select(selector)
         if len(quotes) == 0:
             break
         counter += 1
@@ -49,7 +49,7 @@ def authors_info(authors):
 
 if __name__ == "__main__":
     url = "http://quotes.toscrape.com"
-    # save_data_json("file.json", authors_info(get_authors_links(url)))
+    # save_data_json("file.json", authors_info(get_authors_links(url, selector)))
     # authors_info(get_authors_links())
     # print(get_authors_links())
     # print(soup)
