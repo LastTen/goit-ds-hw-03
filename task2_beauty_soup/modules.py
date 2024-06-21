@@ -18,17 +18,21 @@ def get_soup(url):
     soup = BeautifulSoup(response.text, "lxml")
     return soup
 
+def page_generator(base_url):
+        counter = 1
+        while True:
+            page_url = f"{base_url}/page/{counter}/"
+            soup = get_soup(page_url)
+            if not soup.select(".author + a"):
+                break
+            yield soup
+            counter += 1
+
 
 def get_authors_links(url, selector):
     authors_link = []
-    counter = 1
-    while True:
-        page_url = f"{url}/page/{counter}/"
-        soup = get_soup(page_url)
-        quotes = soup.select(selector)
-        if len(quotes) == 0:
-            break
-        counter += 1
+    for page in page_generator(url):
+        quotes = page.select(selector)
         for quote in quotes:
             link = f"{url}{quote["href"]}"
             if link not in authors_link:
@@ -48,8 +52,13 @@ def authors_info(authors):
     return data
 
 if __name__ == "__main__":
-    url = "http://quotes.toscrape.com"
+    # url = "http://quotes.toscrape.com"
     # save_data_json("file.json", authors_info(get_authors_links(url, selector)))
     # authors_info(get_authors_links())
     # print(get_authors_links())
     # print(soup)
+    url = "http://quotes.toscrape.com"
+    selector_author_link = ".author + a"
+    file_name_authors = "authors.json"
+
+
