@@ -21,19 +21,25 @@ def make_quotes_json(filename, url):
     save_data_json(filename, quotes_info(url))
 
 
-def insert_authors_to_db(filename):
-    db.authors.insert_many(load_data_json(filename))
-    print("Added authors")
+def insert_authors_to_db(filename: str = None):
+    if filename is None:
+        print(f"Enter filename")
+    else:
+        db.authors.insert_many(load_data_json(filename))
+        print("Added authors")
 
 
-def insert_quotes_to_db(filename):
-    db.quotes.insert_many(load_data_json(filename))
-    print("Added quotes")
+def insert_quotes_to_db(filename: str = None):
+    if filename is None:
+        print(f"Enter filename")
+    else:
+        db.quotes.insert_many(load_data_json(filename))
+        print("Added quotes")
 
 
 if __name__ == "__main__":
-    # make_author_json(file_name_authors, url)
-    # make_quotes_json(file_name_quotes, url)
-    # print(load_data_json(file_name_quotes))
+    make_author_json(file_name_authors, url)
+    make_quotes_json(file_name_quotes, url)
+
     insert_authors_to_db(file_name_authors)
     insert_quotes_to_db(file_name_quotes)

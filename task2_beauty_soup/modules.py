@@ -15,9 +15,12 @@ def save_data_json(file, data):
         
 def load_data_json(file):
     """Load the json data from a file"""
-    with open(file, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return data
+    try:
+        with open(file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data
+    except FileNotFoundError:
+        print(f"File {file} not found")
 
 
 def get_soup(url):
