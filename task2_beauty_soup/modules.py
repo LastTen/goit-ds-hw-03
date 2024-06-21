@@ -50,15 +50,42 @@ def authors_info(authors):
                 'description': soup.select_one(".author-description").text,
                 })
     return data
+def quotes_info(url):
+    quotes_info_list = []
+    for soup in page_generator(url):
+            quotes = soup.select(".quote")
+            for quote in quotes:
+                tags = []
+                tags_section = quote.find(class_="tags")
+                if tags_section:
+                    links = tags_section.find_all("a")
+                    for link in links:
+                        tags.append(link.get_text())
+                quotes_info_list.append({"tags": tags,
+                                         "author": quote.select_one(".author").text,
+                                         "quote": quote.select_one(".text").text,
+                                         })
+
+    return quotes_info_list
+                
 
 if __name__ == "__main__":
-    # url = "http://quotes.toscrape.com"
-    # save_data_json("file.json", authors_info(get_authors_links(url, selector)))
-    # authors_info(get_authors_links())
-    # print(get_authors_links())
-    # print(soup)
+
     url = "http://quotes.toscrape.com"
     selector_author_link = ".author + a"
     file_name_authors = "authors.json"
-
+    print(quotes_info(url))
+    
+    
+    # for soup in page_generator(url):
+    #     quotes = soup.select(".quote")
+    #     for quote in quotes:
+    #         print(quote.select_one(".author").text)
+    #         print(quote.select_one(".text").text)
+    #         tags_section = quote.find(class_="tags")
+    #         if tags_section:
+    #             links = tags_section.find_all("a")
+    #             for link in links:
+    #                 print(link.get_text())
+            
 
