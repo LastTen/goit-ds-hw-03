@@ -12,6 +12,13 @@ def save_data_json(file, data):
         encoding="utf-8",
     ) as f:
         json.dump(data, f, indent=4)
+        
+def load_data_json(file):
+    """Load the json data from a file"""
+    with open(file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data
+
 
 def get_soup(url):
     response = requests.get(url)
