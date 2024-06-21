@@ -13,15 +13,28 @@ file_name_authors = "authors.json"
 file_name_quotes = "quotes.json"
 
 
-def make_author_json(filename, url):
-    save_data_json(filename, authors_info(get_authors_links(url, selector_author_link)))
+def make_author_json(filename: str = None, url: str = None):
+    """Parse the author information from the url and create a JSON file"""
+    if filename is None or url is None:
+        print(f"Enter filename")
+    else:
+        save_data_json(
+            filename, authors_info(get_authors_links(url, selector_author_link))
+        )
+        print("Created JSON file with author information")
 
 
-def make_quotes_json(filename, url):
-    save_data_json(filename, quotes_info(url))
+def make_quotes_json(filename: str = None, url: str = None):
+    """Parse the quote information from the url and create a JSON file"""
+    if filename is None or url is None:
+        print(f"Enter filename")
+    else:
+        save_data_json(filename, quotes_info(url))
+        print("Created JSON file with quote information")
 
 
 def insert_authors_to_db(filename: str = None):
+    """Insert the author information from the JSON file to the database"""
     if filename is None:
         print(f"Enter filename")
     else:
@@ -30,6 +43,7 @@ def insert_authors_to_db(filename: str = None):
 
 
 def insert_quotes_to_db(filename: str = None):
+    """Insert the quote information from the JSON file to the database"""
     if filename is None:
         print(f"Enter filename")
     else:

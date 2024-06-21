@@ -4,7 +4,7 @@ import json
 
 
 
-def save_data_json(file, data):
+def save_data_json(file:str, data):
     """Save the json data to a file"""
     with open(
         file,
@@ -13,7 +13,7 @@ def save_data_json(file, data):
     ) as f:
         json.dump(data, f, indent=4)
         
-def load_data_json(file):
+def load_data_json(file:str):
     """Load the json data from a file"""
     try:
         with open(file, "r", encoding="utf-8") as f:
@@ -23,12 +23,13 @@ def load_data_json(file):
         print(f"File {file} not found")
 
 
-def get_soup(url):
+def get_soup(url:str):
+    '''return soup data from a url'''
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
     return soup
 
-def page_generator(base_url):
+def page_generator(base_url:str):
         counter = 1
         while True:
             page_url = f"{base_url}/page/{counter}/"
@@ -39,7 +40,8 @@ def page_generator(base_url):
             counter += 1
 
 
-def get_authors_links(url, selector):
+def get_authors_links(url:str, selector:str):
+    '''return list of authors links'''
     authors_link = []
     for page in page_generator(url):
         quotes = page.select(selector)
@@ -49,7 +51,8 @@ def get_authors_links(url, selector):
                 authors_link.append(f"{url}{quote["href"]}")
     return authors_link
 
-def authors_info(authors):
+def authors_info(authors:list):
+    '''return list of authors information'''
     data = []
     for author in authors:
         link = requests.get(author)
@@ -60,7 +63,8 @@ def authors_info(authors):
                 'description': soup.select_one(".author-description").text,
                 })
     return data
-def quotes_info(url):
+def quotes_info(url:str):
+    '''return list of quotes information'''
     quotes_info_list = []
     for soup in page_generator(url):
             quotes = soup.select(".quote")
